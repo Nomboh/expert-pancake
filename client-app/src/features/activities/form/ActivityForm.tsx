@@ -1,20 +1,25 @@
 import { observer } from "mobx-react-lite";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Form, Segment } from "semantic-ui-react";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
+import { Activity } from "../../../app/models/activity";
 import { useStore } from "../../../app/store/store";
+import { v4 as uuid } from "uuid";
 
 function ActivityForm() {
+  const { id } = useParams();
   const {
     activityStore: {
-      selectedActivity,
-      closeForm,
+      loadActivity,
       createActivity,
       updateActivity,
       loading,
+      loadingInitial,
     },
   } = useStore();
 
-  const initialState = selectedActivity ?? {
+  const initialState = {
     id: "",
     description: "",
     title: "",
@@ -24,10 +29,27 @@ function ActivityForm() {
     venue: "",
   };
 
-  const [activity, setActivity] = useState(initialState);
+  const [activity, setActivity] = useState<Activity>(initialState);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (id) {
+      loadActivity(id).then(activity => setActivity(activity!));
+    }
+  }, [id, loadActivity]);
 
   function handleSubmit() {
-    activity.id ? updateActivity(activity) : createActivity(activity);
+    if (activity.id) {
+      updateActivity(activity).then(() =>
+        navigate(`/activities/${activity.id}`)
+      );
+    } else {
+      activity.id = uuid();
+      createActivity(activity).then(() =>
+        navigate(`/activities/${activity.id}`)
+      );
+    }
   }
 
   function handleInputChange(
@@ -36,6 +58,8 @@ function ActivityForm() {
     const { name, value } = event.target;
     setActivity({ ...activity, [name]: value });
   }
+
+  if (loadingInitial) return <LoadingComponent content="loading activity..." />;
   return (
     <Segment clearing>
       <Form onSubmit={handleSubmit} autoComplete="off">
@@ -91,7 +115,8 @@ function ActivityForm() {
           floated="right"
           type="button"
           content="Cancel"
-          onClick={closeForm}
+          as={Link}
+          to={"/activities"}
         />
       </Form>
     </Segment>
