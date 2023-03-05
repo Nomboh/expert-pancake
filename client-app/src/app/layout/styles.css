@@ -16,6 +16,10 @@ code {
     monospace;
 }
 
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
 /* styling react container */
 
 .react-calendar {
