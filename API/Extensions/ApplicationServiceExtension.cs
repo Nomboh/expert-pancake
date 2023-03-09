@@ -1,7 +1,9 @@
 using Application.Activities;
 using Application.Core;
+using Application.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -22,10 +24,13 @@ namespace API.Extensions
                 policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000"));
             });
 
+            services.AddScoped<IUserAccessor, UserAccessor>();
+            services.AddHttpContextAccessor();
             services.AddMediatR(typeof(List.Handler));
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<ActivityValidator>();
+
 
 
             return services;

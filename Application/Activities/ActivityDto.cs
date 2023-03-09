@@ -1,6 +1,8 @@
-namespace Domain
+using System;
+
+namespace Application.Activities
 {
-    public class Activity
+    public class ActivityDto
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
@@ -13,7 +15,9 @@ namespace Domain
 
         public bool IsCancelled { get; set; }
 
-        public ICollection<ActivityAttendee> Attendees { get; set; }
-        
+        public string HostUsername { get; set; }
+
+        public ICollection<Profiles.Profile> Attendees { get; set; }
     }
+
 }
