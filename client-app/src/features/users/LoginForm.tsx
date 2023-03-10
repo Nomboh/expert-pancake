@@ -7,7 +7,7 @@ import { useStore } from "../../app/store/store";
 
 type Props = {};
 
-function LoginForm({}: Props) {
+function LoginForm(prop: Props) {
   const { userStore } = useStore();
 
   return (

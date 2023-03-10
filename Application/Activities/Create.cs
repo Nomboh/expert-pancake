@@ -46,7 +46,7 @@ namespace Application.Activities
 
                 };
 
-                request.Activity.Attendees.Add(attendee);
+                _context.ActivityAttendees.Add(attendee);
                 
                 _context.Activities.Add(request.Activity);
 

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Header, Segment } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
-import { Activity } from "../../../app/models/activity";
+import { ActivityFormValues } from "../../../app/models/activity";
 import { useStore } from "../../../app/store/store";
 import { v4 as uuid } from "uuid";
 import { Formik, Form } from "formik";
@@ -21,22 +21,13 @@ function ActivityForm() {
       loadActivity,
       createActivity,
       updateActivity,
-      loading,
       loadingInitial,
     },
   } = useStore();
 
-  const initialState = {
-    id: "",
-    description: "",
-    title: "",
-    category: "",
-    date: null,
-    city: "",
-    venue: "",
-  };
+  const initialState = new ActivityFormValues();
 
-  const [activity, setActivity] = useState<Activity>(initialState);
+  const [activity, setActivity] = useState<ActivityFormValues>(initialState);
 
   const navigate = useNavigate();
 
@@ -51,11 +42,13 @@ function ActivityForm() {
 
   useEffect(() => {
     if (id) {
-      loadActivity(id).then(activity => setActivity(activity!));
+      loadActivity(id).then(activity =>
+        setActivity(new ActivityFormValues(activity))
+      );
     }
   }, [id, loadActivity]);
 
-  function handleFormSubmit(activity: Activity) {
+  function handleFormSubmit(activity: ActivityFormValues) {
     if (activity.id) {
       updateActivity(activity).then(() =>
         navigate(`/activities/${activity.id}`)
@@ -107,7 +100,7 @@ function ActivityForm() {
             <MyTextInput placeholder="Venue" name="venue" />
             <Button
               floated="right"
-              loading={loading}
+              loading={isSubmitting}
               positive
               type="submit"
               content="Submit"

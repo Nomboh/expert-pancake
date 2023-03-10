@@ -5,7 +5,7 @@ import { useStore } from "../../store/store";
 
 type Props = {};
 
-function ModalContainer({}: Props) {
+function ModalContainer(prop: Props) {
   const { modalStore } = useStore();
   return (
     <Modal

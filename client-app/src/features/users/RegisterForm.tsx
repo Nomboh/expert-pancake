@@ -1,7 +1,7 @@
 import { ErrorMessage, Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { Button, Header, Label } from "semantic-ui-react";
+import { Button, Header } from "semantic-ui-react";
 import MyTextInput from "../../app/common/forms/MyTextInput";
 import { useStore } from "../../app/store/store";
 import * as Yup from "yup";
@@ -9,7 +9,7 @@ import ValidationError from "../errors/ValidationError";
 
 type Props = {};
 
-function RegisterForm({}: Props) {
+function RegisterForm(prop: Props) {
   const { userStore } = useStore();
 
   return (
