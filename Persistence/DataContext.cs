@@ -17,12 +17,14 @@ namespace Persistence
 
         public DbSet<Comment> Comments { get; set; }
 
+        public DbSet<UserFollowing> UserFollowings { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
             builder.Entity<ActivityAttendee>()
-            .HasKey(aa => new {aa.ActivityId, aa.AppUserId});
+            .HasKey(aa => new { aa.ActivityId, aa.AppUserId });
 
             builder.Entity<ActivityAttendee>()
             .HasOne(a => a.Activity)
@@ -38,8 +40,20 @@ namespace Persistence
             .HasOne(c => c.Activity)
             .WithMany(a => a.Comments)
             .OnDelete(DeleteBehavior.Restrict);
-            
-            
+
+            builder.Entity<UserFollowing>(b =>
+            {
+                b.HasKey(k => new { k.ObserverId, k.TargetId });
+                b.HasOne(u => u.Observer)
+                    .WithMany(u => u.Followings)
+                    .HasForeignKey(o => o.ObserverId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                b.HasOne(u => u.Target)
+                    .WithMany(u => u.Followers)
+                    .HasForeignKey(o => o.TargetId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
         }
     }
 }
