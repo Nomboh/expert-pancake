@@ -13,16 +13,23 @@ namespace API.Extensions
 {
     public static class ApplicationServiceExtension
     {
-        public static IServiceCollection AddApplicationService(this IServiceCollection services, IConfiguration config){
+        public static IServiceCollection AddApplicationService(this IServiceCollection services, IConfiguration config)
+        {
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
-            services.AddDbContext<DataContext>(opt => {
+            services.AddDbContext<DataContext>(opt =>
+            {
                 opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddCors(opt => {
-                opt.AddPolicy("CorsPolicy", policy => 
-                policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000"));
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                policy
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .WithOrigins("http://localhost:3000"));
             });
 
             services.AddScoped<IUserAccessor, UserAccessor>();
@@ -33,6 +40,7 @@ namespace API.Extensions
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<ActivityValidator>();
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
+            services.AddSignalR();
 
 
 

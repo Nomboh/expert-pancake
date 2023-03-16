@@ -12,7 +12,12 @@ import ActivityDetailedSidebar from "./ActivityDetailedSidebar";
 function ActivityDetails() {
   const { id } = useParams();
   const {
-    activityStore: { selectedActivity: activity, loadingInitial, loadActivity },
+    activityStore: {
+      selectedActivity: activity,
+      loadingInitial,
+      loadActivity,
+      clearSelectedActivity,
+    },
   } = useStore();
 
   console.log(activity, loadingInitial);
@@ -21,7 +26,9 @@ function ActivityDetails() {
     if (id) {
       loadActivity(id);
     }
-  }, [loadActivity, id]);
+
+    return () => clearSelectedActivity();
+  }, [loadActivity, id, clearSelectedActivity]);
 
   if (!activity || loadingInitial)
     return <LoadingComponent content="Loading Activity" />;
@@ -30,7 +37,7 @@ function ActivityDetails() {
       <Grid.Column width="10">
         <ActivityDetailedHeader activity={activity} />
         <ActivityDetailedInfo activity={activity} />
-        <ActivityDetailedChat />
+        <ActivityDetailedChat activityId={activity.id} />
       </Grid.Column>
       <Grid.Column width="6">
         <ActivityDetailedSidebar activity={activity} />

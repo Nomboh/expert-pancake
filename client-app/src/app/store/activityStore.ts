@@ -211,4 +211,8 @@ export class activityStore {
       runInAction(() => (this.loading = false));
     }
   };
+
+  clearSelectedActivity = () => {
+    this.selectedActivity = undefined;
+  };
 }
