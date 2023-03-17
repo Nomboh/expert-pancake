@@ -215,4 +215,15 @@ export class activityStore {
   clearSelectedActivity = () => {
     this.selectedActivity = undefined;
   };
+
+  updateActivityAttendee = (username: string) => {
+    this.activityRegistry.forEach(activity => {
+      activity.attendees.forEach(attendee => {
+        if(attendee.username === username){
+          attendee.following ? attendee.followerCount-- : attendee.followerCount++;
+          attendee.following = !attendee.following;
+        }
+      })
+    })
+  }
 }

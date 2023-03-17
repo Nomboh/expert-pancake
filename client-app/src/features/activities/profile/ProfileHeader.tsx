@@ -38,8 +38,8 @@ function ProfileHeader({ profile }: Props) {
 
         <GridColumn width={4}>
           <Statistic.Group>
-            <Statistic label="Followers" value="5" />
-            <Statistic label="Following" value="55" />
+            <Statistic label="Followers" value={profile.followerCount}/>
+            <Statistic label="Following" value={profile.followingCount} />
           </Statistic.Group>
 
           <Divider />

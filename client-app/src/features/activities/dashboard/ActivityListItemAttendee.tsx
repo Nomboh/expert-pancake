@@ -9,6 +9,11 @@ type Props = {
   attendee: Profile[];
 };
 
+const borderStyle = {
+  borderWidth: "2px",
+  borderColor: "#fb8500"
+}
+
 function ActivityListItemAttendee({ attendee }: Props) {
   return (
     <List horizontal>
@@ -24,6 +29,8 @@ function ActivityListItemAttendee({ attendee }: Props) {
                 to={`/profiles/${attendant.username}`}
               >
                 <Image
+                  style={attendant.following ? borderStyle : {}}
+                  bordered
                   circular
                   src={attendant.image || `/assets/user.png`}
                   size="mini"
