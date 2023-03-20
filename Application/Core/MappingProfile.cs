@@ -26,6 +26,12 @@ namespace Application.Core
             .ForMember(x => x.FollowingCount, x => x.MapFrom(x => x.AppUser.Followings.Count))
             .ForMember(x => x.Following, x => x.MapFrom(x => x.AppUser.Followers.Any(x => x.Observer.UserName == currentUsername)));
 
+            CreateMap<ActivityAttendee, Profiles.UserActivityDto>()
+            .ForMember(x => x.HostUsername, x => x.MapFrom(x => x.Activity.Attendees.FirstOrDefault(x => x.IsHost).AppUser.UserName))
+            .ForMember(x => x.Category, x => x.MapFrom(x => x.Activity.Category))
+            .ForMember(x => x.Title, x => x.MapFrom(x => x.Activity.Title))
+            .ForMember(x => x.Id, x => x.MapFrom(x => x.Activity.Id))
+            .ForMember(x => x.Date, x => x.MapFrom(x => x.Activity.Date));
 
             CreateMap<AppUser, Profiles.Profile>()
             .ForMember(x => x.Image, o => o.MapFrom(p => p.Photos.FirstOrDefault(x => x.IsMain).Url))
