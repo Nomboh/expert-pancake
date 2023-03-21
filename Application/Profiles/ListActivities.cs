@@ -37,7 +37,7 @@ namespace Application.Profiles
                 {
                     case "past":
                         activityAttendee = activityAttendee
-                            .Where(aa => aa.Date <= DateTime.Now);
+                            .Where(aa => aa.Date <= DateTime.UtcNow);
                         break;
 
                     case "hosting":
@@ -49,7 +49,7 @@ namespace Application.Profiles
                     default:
                         activityAttendee = activityAttendee
                             .Where(aa =>
-                                aa.Date >= DateTime.Now);
+                                aa.Date >= DateTime.UtcNow);
                         break;
                 }
 
